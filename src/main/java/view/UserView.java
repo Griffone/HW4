@@ -5,9 +5,14 @@
  */
 package view;
 
+import controller.CurrencyConvertor;
 import java.io.Serializable;
+import javax.ejb.EJB;
+import javax.enterprise.context.Conversation;
 import javax.enterprise.context.ConversationScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
+import model.Currency;
 
 /**
  *
@@ -17,6 +22,36 @@ import javax.inject.Named;
 @ConversationScoped
 public class UserView implements Serializable {
 
-    // TODO: list of currencies called 'currencies'
+    @EJB
+    private CurrencyConvertor convertor;
+    private Currency currencyFrom;
+    private Currency currencyTo;
+    private double amount;
+    @Inject
+    private Conversation conversation;
+    private Exception exception;
     
+    private void startConversation() {
+        if (conversation.isTransient())
+            conversation.begin();
+    }
+    
+    private void stopConversation() {
+        if (!conversation.isTransient())
+            conversation.end();
+    }
+    
+    private void handleException(Exception e) {
+        stopConversation();
+        e.printStackTrace(System.err);
+        exception = e;
+    }
+    
+    public boolean getSuccess() {
+        return exception == null;
+    }
+    
+    public Exception getException() {
+        return exception;
+    }
 }

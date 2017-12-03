@@ -17,6 +17,11 @@ import javax.persistence.NamedQuery;
     @NamedQuery(
             name = "findCurrencyByName",
             query = "SELECT c FROM Currency c WHERE c.name LIKE :name"
+    ),
+    
+    @NamedQuery(
+            name = "getAllCurrencies",
+            query = "SELECT c FROM Currency c"
     )
 })
 

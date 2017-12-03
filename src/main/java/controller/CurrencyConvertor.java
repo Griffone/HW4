@@ -5,15 +5,30 @@
  */
 package controller;
 
+import exceptions.EntityAlreadyExistsException;
+import integration.DatabaseAccessObject;
+import java.util.List;
+import javax.ejb.EJB;
 import javax.ejb.Singleton;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
+import model.Currency;
 
-/**
- *
- * @author Griffone
- */
+@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 @Singleton
 public class CurrencyConvertor {
 
-    // Add business logic below. (Right-click in editor and choose
-    // "Insert Code > Add Business Method")
+    @EJB DatabaseAccessObject dao;
+    
+    public void createCurrency(String name, double rate) throws EntityAlreadyExistsException {
+        dao.storeCurrency(new Currency(name, rate));
+    }
+    
+    public double convert(long id_from, long id_to, double amount) {
+        return dao.getCurrency(id_from).getRate() / dao.getCurrency(id_to).getRate() * amount;
+    }
+    
+    public List<Currency> getCurrencies() {
+        return dao.getAllCurrencies();
+    }
 }
