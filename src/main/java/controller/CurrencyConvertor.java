@@ -24,6 +24,10 @@ public class CurrencyConvertor {
         dao.storeCurrency(new Currency(name, rate));
     }
     
+    public void deleteCurrency(long id) {
+        dao.deleteCurrency(id);
+    }
+    
     public double convert(long id_from, long id_to, double amount) {
         return dao.getCurrency(id_from).getRate() / dao.getCurrency(id_to).getRate() * amount;
     }

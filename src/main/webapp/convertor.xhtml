@@ -8,11 +8,46 @@
         <title>Convertor</title>
     </h:head>
     <h:body>
-        <h:selectOneListbox value="#{convertor.fromCurrency}">
-            <c:forEach var="item" items="#{convertor.currencies}">
-                <f:selectItem itemValue="#{item.currencyID}" itemLabel="#{item.name}">
-            </c:forEach>
-        </h:selectOneListbox>
+        <header>
+            <h1>Welcome to Griffone's currency convertor!</h1>
+            <h3>Please select which currency you would like to convert from and to!</h3>
+        </header>
+        <h:form>
+            <p>
+                Initial currency:
+                <br />
+                <h:inputText value="#{user_view.amountFrom}">
+                    <f:convertNumber pattern="#0.00" />
+                </h:inputText>
+                <h:outputLabel value=" of "/>
+                <h:selectOneMenu id="currency_from" value="#{user_view.currencyFrom}">
+                    <c:forEach var="item" items="#{user_view.currencies}">
+                        <f:selectItem itemValue="#{item.id}" itemLabel="#{item.name}"/>
+                    </c:forEach>
+                </h:selectOneMenu>
+                <h:outputLabel value=" "/>
+                <h:commandButton value="Convert" action="#{user_view.convert()}"/>
+                <br />
+                <h:outputText value="#{user_view.messageFrom}" style="color:red;" rendered="#{user_view.messageFrom != null}" />
+            </p>
+            <p>
+                Resulting currency:
+                <br />
+                <h:inputText value="#{user_view.amountTo}" label="Resulting amount">
+                    <f:convertNumber pattern="#0.00" />
+                </h:inputText>
+                <h:outputLabel value=" of "/>
+                <h:selectOneMenu id="currency_to" value="#{user_view.currencyTo}">
+                    <c:forEach var="item" items="#{user_view.currencies}">
+                        <f:selectItem itemValue="#{item.id}" itemLabel="#{item.name}"/>
+                    </c:forEach>
+                </h:selectOneMenu>
+                <h:outputLabel value=" "/>
+                <h:commandButton value="Convert" action="#{user_view.convertReverse()}"/>
+                <br />
+                <h:outputText value="#{user_view.messageTo}" style="color:red;" rendered="#{user_view.messageTo != null}" />
+            </p>
+        </h:form>
     </h:body>
 </html>
 

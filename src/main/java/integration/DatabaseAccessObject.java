@@ -12,6 +12,7 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import model.Currency;
 
@@ -36,13 +37,20 @@ public class DatabaseAccessObject {
     }
     
     public void storeCurrency(Currency currency) throws EntityAlreadyExistsException {
-        if (em.createNamedQuery("findCurrencyByName", Currency.class).setParameter("name", currency.getName()).getSingleResult() == null)
-            em.persist(currency);
-        else
+        try {
+            em.createNamedQuery("findCurrencyByName", Currency.class).setParameter("name", currency.getName()).getSingleResult();
             throw new EntityAlreadyExistsException(currency.getName() + " already exists in the database!");
+        } catch (NoResultException ex) {
+            em.persist(currency);
+        }
     }
     
     public List<Currency> getAllCurrencies() {
         return em.createNamedQuery("getAllCurrencies", Currency.class).getResultList();
+    }
+    
+    public void deleteCurrency(long id) {
+        Currency c = em.find(Currency.class, id);
+        em.remove(c);
     }
 }

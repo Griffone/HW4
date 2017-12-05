@@ -1,12 +1,35 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     <h:head>
         <title>Admin View</title>
     </h:head>
     <h:body>
-        Hello from Facelets
+        <h1>Admin view</h1>
+        <h:form>
+            <h:outputLabel value="Currency name:" />
+            <h:inputText value="#{admin_view.currencyName}" />
+            <h:outputLabel value="Currency rate:" />
+            <h:inputText value="#{admin_view.currencyRate}" />
+            <h:outputLabel value=" " />
+            <h:commandButton value="Create currency" action="#{admin_view.addCurrency()}" />
+            <br />
+            <h:outputText style="color:red;" rendered="#{admin_view.errorMessage != null}" value="#{admin_view.errorMessage}" />
+        </h:form>
+        <h3>Currencies:</h3>
+        <h:form>
+            <c:forEach var="item" items="#{admin_view.currencies}">
+                <h:outputText value="#{item.name} : #{item.rate}" />
+                <h:outputLabel value=" " />
+                <h:commandButton value="Delete" action="#{admin_view.deleteCurrency(item.id)}" />
+                <br />
+            </c:forEach>
+        </h:form>
+        <p>
+            <h:link value="to convertor page" outcome="return" />
+        </p>
     </h:body>
 </html>
 

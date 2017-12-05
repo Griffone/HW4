@@ -3,13 +3,24 @@
               xmlns="http://xmlns.jcp.org/xml/ns/javaee"
               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
               xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_2.xsd">
-    <!-- an example
-    -->
     <navigation-rule>
         <from-view-id>convertor.xhtml</from-view-id>
         <navigation-case>
-            <if>#{!convertor.success}</if>
+            <if>#{!user_view.success}</if>
             <to-view-id>exception.xhtml</to-view-id>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>return</from-outcome>
+            <to-view-id>convertor.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>admin.xhtml</from-view-id>
+        <navigation-case>
+            <if>#{!admin_view.success}</if>
+            <to-view-id>exception.xhtml</to-view-id>
+            <from-outcome>return</from-outcome>
+            <to-view-id>convertor.xhtml</to-view-id>
         </navigation-case>
     </navigation-rule>
 </faces-config>
